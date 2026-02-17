@@ -7,6 +7,11 @@
 
 use MIST353_NFL_RDB_Derringer;
 
+if(OBJECT_ID('Team') IS NOT NULL)
+    DROP TABLE Team;
+
+if(OBJECT_ID('ConferenceDivision') IS NOT NULL)
+    DROP TABLE ConferenceDivision;
 
 -- Create tables for first iteration
 
@@ -19,9 +24,16 @@ create TABLE ConferenceDivision (
         constraint CK_ConferenceNames CHECK (Conference IN ('AFC', 'NFC')),
      Division NVARCHAR(50) NOT NULL
         constraint CK_DivisionNames CHECK (Division IN ('East', 'North', 'South', 'West'))
-    
+        constraint UQ_ConferenceDivision UNIQUE (Conference, Division)
 );
+/*
+alter table ConferenceDivision
+   NOCHECK CONSTRAINT CK_ConferenceNames;
 
+alter table ConferenceDivision
+CHECK CONSTRAINT CK_ConferenceNames;
+
+*/
 go
 
 create TABLE Team ( 
