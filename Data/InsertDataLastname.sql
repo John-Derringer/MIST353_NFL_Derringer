@@ -1,21 +1,66 @@
 -- Insert data
 -- Insert all the ConferenceDivision data (8 rows)
 -- Insert team data for AFC North (4 rows)
+use MIST353_NFL_RDB_Derringer;
 
-INSERT INTO ConferenceDivision (ConferenceDivisionID, Conference, Division)
+INSERT INTO ConferenceDivision (Conference, Division)
     VALUES
-    (1, 'AFC', 'North'),
-    (2, 'AFC', 'South'),
-    (3, 'AFC', 'East'),
-    (4, 'AFC', 'West'),
-    (5, 'NFC', 'North'),
-    (6, 'NFC', 'South'),
-    (7, 'NFC', 'East'),   
-    (8, 'NFC', 'West');
+    ('AFC', 'North'),
+    ('AFC', 'South'),
+    ('AFC', 'East'),
+    ('AFC', 'West'),
+    ('NFC', 'North'),
+    ('NFC', 'South'),
+    ('NFC', 'East'),
+    ('NFC', 'West');
 
-INSERT INTO Team (TeamID, TeamName, TeamCityState, TeamColors, ConferenceDivisionID)
+    
+    GO
+    select * from ConferenceDivision
+    order by ConferenceDivisionID;
+
+    GO
+
+INSERT INTO Team (TeamName, TeamCityState, TeamColors, ConferenceDivisionID)
     VALUES
-    (1, 'Pittsburgh Steelers', 'Pittsburgh,PA', 'Black,Yellow',1),
-    (2, 'Baltimore Ravens', 'Baltimore, MD', 'Black,Purple', 1),
-    (3, 'Cincinnati Bengals', 'Cincinnati, OH', 'Black,Orange', 1),
-    (4, 'Cleveland Browns', 'Cleveland, OH', 'Brown,Orange', 1);
+    ('Pittsburgh Steelers', 'Pittsburgh,PA', 'Black,Yellow',1),
+    ('Baltimore Ravens', 'Baltimore, MD', 'Black,Purple', 1),
+    ('Cincinnati Bengals', 'Cincinnati, OH', 'Black,Orange', 1),
+    ('Cleveland Browns', 'Cleveland, OH', 'Brown,Orange', 1),
+
+    ('Houston Texans', 'Houston, TX', 'Deep Steel Blue, Battle Red, Liberty White', 2),
+    ('Indianapolis Colts', 'Indianapolis, IN', 'Speed Blue, White', 2),
+    ('Jacksonville Jaguars', 'Jacksonville, FL', 'Teal, Black, Gold', 2),
+    ('Tennessee Titans', 'Nashville, TN', 'Titans Navy, Titans Light Blue, Titans Red', 2),
+
+    ('Buffalo Bills', 'Buffalo, NY', 'Royal Blue, Red, White', 3),
+    ('Miami Dolphins', 'Miami, FL', 'Aqua, Orange, White', 3),
+    ('New England Patriots', 'Foxborough, MA', 'Navy Blue, Red, Silver', 3),
+    ('New York Jets', 'East Rutherford, NJ', 'Gotham Green, Spotlight White, Stealth Black', 3),
+
+    ('Denver Broncos', 'Denver, CO', 'Orange, Navy Blue, White', 4),
+    ('Kansas City Chiefs', 'Kansas City, MO', 'Red, Gold, White', 4),
+    ('Las Vegas Raiders', 'Las Vegas, NV', 'Silver, Black', 4),
+    ('Los Angeles Chargers', 'Los Angeles, CA', 'Powder Blue, Sunshine Gold, White', 4),
+
+    ('Chicago Bears', 'Chicago, IL', 'Navy Blue, Orange, White', 5),
+    ('Detroit Lions', 'Detroit, MI', 'Honolulu Blue, Silver, White', 5),
+    ('Green Bay Packers', 'Green Bay, WI', 'Dark Green, Gold, White', 5),
+    ('Minnesota Vikings', 'Minneapolis, MN', 'Purple, Gold, White', 5),
+
+    ('Atlanta Falcons', 'Atlanta, GA', 'Red, Black, Silver, White', 6),
+    ('Carolina Panthers', 'Charlotte, NC', 'Black, Panther Blue, Silver, White', 6),
+    ('New Orleans Saints', 'New Orleans, LA', 'Old Gold, Black, White', 6),
+    ('Tampa Bay Buccaneers', 'Tampa Bay, FL', 'Red, Pewter, Black, Orange', 6),
+
+    ('Dallas Cowboys', 'Dallas, TX', 'Navy Blue, Metallic Silver, White', 7),
+    ('New York Giants', 'East Rutherford, NJ', 'Royal Blue, Red, White', 7),
+    ('Philadelphia Eagles', 'Philadelphia, PA', 'Midnight Green, Silver Metallic, Black Metallic, White', 7),
+    ('Washington Commanders','Landover MD','Burgundy,Gold',7),
+
+    ('Arizona Cardinals','Phoenix AZ','Cardinal Red,Black',8),
+    ('Los Angeles Rams','Los Angeles CA','Royal Blue,Yellow',8),
+    ('San Francisco 49ers','San Francisco CA','Red,Gold',8),
+    ('Seattle Seahawks','Seattle WA','College Navy,Action Green',8);
+
+
