@@ -14,12 +14,12 @@ INSERT INTO ConferenceDivision (Conference, Division)
     ('NFC', 'East'),
     ('NFC', 'West');
 
+GO
+select * from ConferenceDivision
+order by ConferenceDivisionID;
     
-    GO
-    select * from ConferenceDivision
-    order by ConferenceDivisionID;
 
-    GO
+GO
 
 INSERT INTO Team (TeamName, TeamCityState, TeamColors, ConferenceDivisionID)
     VALUES
@@ -58,9 +58,11 @@ INSERT INTO Team (TeamName, TeamCityState, TeamColors, ConferenceDivisionID)
     ('Philadelphia Eagles', 'Philadelphia, PA', 'Midnight Green, Silver Metallic, Black Metallic, White', 7),
     ('Washington Commanders','Landover MD','Burgundy,Gold',7),
 
-    ('Arizona Cardinals','Phoenix AZ','Cardinal Red,Black',8),
-    ('Los Angeles Rams','Los Angeles CA','Royal Blue,Yellow',8),
-    ('San Francisco 49ers','San Francisco CA','Red,Gold',8),
-    ('Seattle Seahawks','Seattle WA','College Navy,Action Green',8);
+    ('Arizona Cardinals','Phoenix AZ','Cardinal Red ,Black',8),
+    ('Los Angeles Rams','Los Angeles CA','Royal Blue, Yellow',8),
+    ('San Francisco 49ers','San Francisco CA','Red, Gold',8),
+    ('Seattle Seahawks','Seattle WA','College Navy, Action Green',8);
 
+GO 
+select * from Team;
 
