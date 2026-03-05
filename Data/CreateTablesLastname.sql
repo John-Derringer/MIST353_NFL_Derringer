@@ -5,12 +5,7 @@
 
 --DROP database NFL_RDB_Derringer
 
-
-use MIST353_NFL_RDB_Derringer;
-
-
-
-
+USE MIST353_NFL_RDB_Derringer;
 
 if(OBJECT_ID('Team') IS NOT NULL)
     DROP TABLE Team;
