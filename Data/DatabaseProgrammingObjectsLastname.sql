@@ -1,7 +1,11 @@
 -- 3 queries 
 -- 1 each ConferenceDivision and Team tables, and 1 join query
-use MIST353_NFL_RDB_Derringer;
 
+
+
+
+
+use MIST353_NFL_RDB_Derringer;
 
 
 
