@@ -6,37 +6,7 @@
 --DROP database NFL_RDB_Derringer
 -- Step 1: Create a login at the server level
 
-use mist353;
-
-CREATE LOGIN NandaSurendra
-
-WITH PASSWORD = 'MI$T353Instructor';
-
-
-
--- Step 2: Switch to your target database
-
-USE MIST353_NFL_RDB_Derringer;
-
-
-
--- Step 3: Create a database user mapped to the login
-
-CREATE USER NandaSurendra
-
-FOR LOGIN NandaSurendra;
-
-
-
--- Step 4: Grant EXECUTE permission on all stored procedures and UDFs
-
-GRANT EXECUTE TO NandaSurendra;
-
-
-
--- Read access to all tables
-
-GRANT SELECT TO NandaSurendra;
+use MIST353_NFL_RDB_Derringer;
 
 
 if(OBJECT_ID('Team') IS NOT NULL)

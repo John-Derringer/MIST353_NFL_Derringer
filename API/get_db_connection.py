@@ -4,12 +4,22 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 def get_db_connection():
     server = os.getenv("DB_SERVER")
     database = os.getenv("DB_NAME")
     username = os.getenv("DB_LOGIN")
     password = os.getenv("DB_PASSWORD")
-    #ODBC Driver 18 for SQL Server can ONLY be used in Sychronous mode
-    connection_string = f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password};Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;"
-    return pyodbc.connect(connection_string)
+
+    connection_string = (
+        "DRIVER={ODBC Driver 18 for SQL Server};"
+        f"SERVER=tcp:{server},1433;"
+        f"DATABASE={database};"
+        f"UID={username};"
+        f"PWD={password};"
+        "Encrypt=yes;"
+        "TrustServerCertificate=no;"
+        "Connection Timeout=30;"
+    )
+
+    conn = pyodbc.connect(connection_string)
+    return conn
