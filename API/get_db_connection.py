@@ -10,6 +10,10 @@ def get_db_connection():
     username = os.getenv("DB_LOGIN")
     password = os.getenv("DB_PASSWORD")
 
+    # For Azure SQL Database, username should be in format user@server
+    if '@' not in username:
+        username = f"{username}@{server.split('.')[0]}"
+
     connection_string = (
         "DRIVER={ODBC Driver 18 for SQL Server};"
         f"SERVER=tcp:{server},1433;"
@@ -17,7 +21,7 @@ def get_db_connection():
         f"UID={username};"
         f"PWD={password};"
         "Encrypt=yes;"
-        "TrustServerCertificate=no;"
+        "TrustServerCertificate=yes;"  # Changed to yes for Azure
         "Connection Timeout=30;"
     )
 
