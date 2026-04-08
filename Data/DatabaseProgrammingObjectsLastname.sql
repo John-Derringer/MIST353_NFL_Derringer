@@ -40,19 +40,23 @@ END
 -- execute proValidateUser @Email = 'tom.brady@example.com', @PasswordHash = '0x01';
 -- select * from AppUser;
 
-GO
 
-create or alter procedure proGetTeamsForSpecifiedFan(
-    @NFLFanID INT
-    )
+GO
+CREATE OR ALTER PROCEDURE proGetTeamsForSpecifiedFan
+(
+    @NFLFanID INT 
+)
 AS
 BEGIN
-    SELECT T.TeamName, CD.Conference, CD.Division
-    FROM NFLFan F
-    inner join Team T 
-    on F.NFLFanID = T.TeamID
-    inner join ConferenceDivision CD on T.ConferenceDivisionID = CD.ConferenceDivisionID
-    where F.NFLFanID = @NFLFanID;
+    SELECT  
+        T.TeamID,T.TeamName, CD.Conference, CD.Division, T.TeamColors
+    FROM FanTeam FT 
+    INNER JOIN Team T 
+        ON FT.TeamID = T.TeamID
+    INNER JOIN ConferenceDivision CD 
+        ON T.ConferenceDivisionID = CD.ConferenceDivisionID
+    WHERE FT.NFLFanID = @NFLFanID
+    ORDER BY T.TeamName;
 END;
 
 -- execute proGetTeamsForSpecifiedFan @NFLFanID = 1;
