@@ -41,22 +41,28 @@ END
 -- select * from AppUser;
 
 
+
 GO
-CREATE OR ALTER PROCEDURE proGetTeamsForSpecifiedFan
+
+CREATE OR ALTER PROCEDURE proGetTeamsForSpecifiedFan 
 (
     @NFLFanID INT 
-)
-AS
+) 
+AS 
 BEGIN
-    SELECT  
-        T.TeamID,T.TeamName, CD.Conference, CD.Division, T.TeamColors
-    FROM FanTeam FT 
+    SELECT 
+        T.TeamID,
+        T.TeamName, 
+        CD.Conference, 
+        CD.Division, T.TeamColors
+    FROM NFLFan F   
+     INNER JOIN FanTeam FT 
+        ON F.NFLFanID = FT.NFLFanID 
     INNER JOIN Team T 
-        ON FT.TeamID = T.TeamID
+        ON FT.TeamID = T.TeamID 
     INNER JOIN ConferenceDivision CD 
-        ON T.ConferenceDivisionID = CD.ConferenceDivisionID
-    WHERE FT.NFLFanID = @NFLFanID
-    ORDER BY T.TeamName;
+        ON T.ConferenceDivisionID = CD.ConferenceDivisionID 
+    WHERE F.NFLFanID = @NFLFanID  
 END;
 
 -- execute proGetTeamsForSpecifiedFan @NFLFanID = 1;
