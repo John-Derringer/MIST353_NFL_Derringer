@@ -51,7 +51,6 @@ CREATE OR ALTER PROCEDURE proGetTeamsForSpecifiedFan
 AS 
 BEGIN
     SELECT 
-        T.TeamID,
         T.TeamName, 
         CD.Conference, 
         CD.Division, T.TeamColors
