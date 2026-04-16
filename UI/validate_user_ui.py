@@ -23,7 +23,7 @@ def validate_user_ui():
         else:
             input_params["password_hash"] = password_hash.strip()
 
-        df = fetch_data("validate_user/", input_params)
+        df = fetch_data("validate_user", input_params)
 
         if df is not None and not df.empty:
             st.subheader(f"User {email} is valid:")

@@ -7,7 +7,8 @@ def get_teams_by_conference_division(
 
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("{call proGetTeamByConferenceDivision(?, ?)}", (conference, division))
+    #cursor.execute("{call proGetTeamByConferenceDivision(?, ?)}", (conference, division))
+    cursor.callproc("proGetTeamByConferenceDivision", (conference, division))
     rows = cursor.fetchall()
     conn.close()
     
