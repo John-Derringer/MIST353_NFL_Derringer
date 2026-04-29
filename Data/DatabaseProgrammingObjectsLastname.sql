@@ -1,29 +1,6 @@
 
 use MIST353_NFL_RDB_Derringer;
 
-select * from ConferenceDivision;
-
-SELECT CD.ConferenceDivisionID, CD.Conference, CD.Division
-FROM ConferenceDivision AS CD
-ORDER BY CD.Conference, CD.Division;
-
-SELECT T.TeamName, T.TeamCityState, T.TeamColors
-FROM Team AS T
-ORDER BY T.TeamName;
-
-SELECT T.TeamName, T.TeamCityState, CD.Conference, CD.Division
-FROM Team AS T
-INNER JOIN ConferenceDivision AS CD ON T.ConferenceDivisionID = CD.ConferenceDivisionID
-
-
-GO
-declare @myTeamName NVARCHAR(50) = 'Pittsburgh Steelers';
-
-select OtherTeam.TeamName
-from Team
-MyTeam inner join Team OtherTeam on MyTeam.ConferenceDivisionID = OtherTeam.ConferenceDivisionID
-where MyTeam.TeamName = @myTeamName and OtherTeam.TeamName != @myTeamName;
-
 GO
 
 create or alter procedure proValidateUser(
@@ -66,6 +43,27 @@ END;
 
 -- execute proGetTeamsForSpecifiedFan @NFLFanID = 1;
 -- execute proGetTeamsForSpecifiedFan @NFLFanID = 2;
+
+GO
+
+CREATE OR ALTER PROCEDURE procGetTeamsInSameConferenceDivisionAsSpecifiedTeam
+(
+    @TeamName NVARCHAR(50)
+)
+AS
+BEGIN
+    SELECT
+        OT.TeamName,
+        CD.Conference,
+        CD.Division
+    FROM Team MT
+    INNER JOIN Team OT
+        ON MT.ConferenceDivisionID = OT.ConferenceDivisionID
+    INNER JOIN ConferenceDivision CD
+        ON OT.ConferenceDivisionID = CD.ConferenceDivisionID
+    WHERE MT.TeamName = @TeamName
+      AND OT.TeamName != @TeamName;
+END;
 
 GO
 
@@ -245,3 +243,50 @@ BEGIN
     INSERT INTO AdminChangesTracker (NFLAdminID, GameID, ChangeType, ChangeDescription)
     VALUES (@NFLAdminID, @GameID, @ChangeType, @ChangeDescription);
 END
+
+GO
+
+create or alter procedure procGetAllChangesMadeBySpecifiedAdmin
+
+(
+
+  @NFLAdminID INT
+
+)
+
+as
+
+begin
+
+  select ACT.ChangeDateTime, ACT.ChangeType, ACT.ChangeDescription, G.GameRound, G.GameDate, G.GameStartTime,
+
+  HT.TeamName as HomeTeam, AT.TeamName as AwayTeam, S.StadiumName
+
+  from AdminChangesTracker ACT inner join Game G
+
+    on ACT.GameID = G.GameID
+
+    inner join Team HT
+
+    on G.HomeTeamID = HT.TeamID
+
+    inner join Team AT
+
+    on G.AwayTeamID = AT.TeamID
+
+    inner join Stadium S
+
+    on G.StadiumID = S.StadiumID
+
+  where ACT.NFLAdminID = @NFLAdminID
+
+  order by ACT.ChangeDateTime desc;
+
+end
+
+
+
+-- execute procGetAllChangesMadeBySpecifiedAdmin @NFLAdminID = 5; -- Bill Belichick
+
+
+select * from FanTeam;

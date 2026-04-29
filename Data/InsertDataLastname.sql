@@ -62,7 +62,7 @@ VALUES
 
 GO
 
-insert into AppUser (Firstname, Lastname, Email, PhoneNumber, PasswordHash, UserRole)
+insert into AppUser (Firstname, Lastname, Email, Phone, PasswordHash, UserRole)
 VALUES
 ('Tom', 'Brady', 'tom.brady@example.com', '555-1234', 0x01, N'NFLFan'),
 ('Aaron', 'Rodgers', 'aaron.rodgers@example.com', '555-9012', 0x01, N'NFLFan'),
@@ -74,6 +74,8 @@ VALUES
 ('Mike', 'Tomlin', 'mike.tomlin@example.com', '555-1111', 0x01, N'NFLAdmin'),
 ('Andy', 'Reid', 'andy.reid@example.com', '555-3333', 0x01, N'NFLAdmin');
 
+--select * from AppUser order by AppUserID;
+
 GO
 
 insert into NFLFan (NFLFanID)
@@ -82,7 +84,7 @@ VALUES
 (2),
 (3),
 (4);
-
+-- select * from NFLFan order by NFLFanID;
 GO
 
 insert into NFLAdmin (NFLAdminID)
@@ -91,7 +93,7 @@ VALUES
 (6),
 (7),
 (8);
-
+-- select * from NFLAdmin order by NFLAdminID;
 GO
 
 insert into FanTeam (NFLFanID, TeamID, PrimaryTeam)
@@ -104,6 +106,8 @@ VALUES
 (3, 3, 1), -- Drew Brees is a fan New Orleans Saints (primary) and Los Angeles Chargers
 (3, 16, 0),
 (4, 14, 1); -- Patrick Mahomes is a fan of Kansas City Chiefs (primary)
+
+-- select * from FanTeam order by FanTeamID;
 
 go
 
@@ -220,6 +224,7 @@ VALUES
 -- Miami Dolphins
 (10, 33, 1987, NULL);
 
+-- select * from TeamStadium order by TeamStadiumID;
 GO
 
 INSERT INTO Game (GameRound, GameDate, GameStartTime, HomeTeamID, AwayTeamID, StadiumID, HomeTeamScore, AwayTeamScore, WinningTeamID)
@@ -234,6 +239,8 @@ VALUES
     ('Divisional', '2026-01-17', '20:00:00', 32, 31, 30, 41,  6, 32),
     ('Divisional', '2026-01-18', '15:00:00', 11,  5, 11, 28, 16, 11),
     ('Divisional', '2026-01-18', '18:30:00', 17, 30, 17, 17, 20, 30);
+
+    -- select * from Game order by GameID;
 
 go
 
@@ -259,7 +266,7 @@ VALUES
     (5, 9,  '2026-04-23 02:14:40.840', 'Update', 'Scores updated by Bill Belichick for GameID=9: Home=New England Patriots (28), Away=Houston Texans (16), WinningTeam=New England Patriots'),
     (6, 10, '2026-04-23 02:14:45.890', 'Insert', 'Sean McVay scheduled a new game with GameID 10: Chicago Bears vs Los Angeles Rams on 2026-01-18 at 18:30:00.0000000 in stadium  Soldier Field. Game round: Divisional'),
     (7, 10, '2026-04-23 02:14:49.420', 'Update', 'Scores updated by Mike Tomlin for GameID=10: Home=Chicago Bears (17), Away=Los Angeles Rams (20), WinningTeam=Los Angeles Rams');
-
+-- select * from AdminChangesTracker order by AdminChangesTrackerID desc;
 go
 
 -- execute procScheduleGame 

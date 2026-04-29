@@ -8,8 +8,14 @@ def get_teams_in_same_conference_division_as_specified_team(
     cursor = conn.cursor(as_dict=True)
 
     cursor.execute(
-        "exec procGetTeamsInSameConferenceDivisionAsSpecifiedTeam %s",
-        (team_name,)
+        """
+        SELECT OT.TeamName, CD.Conference, CD.Division
+        FROM Team MT
+        INNER JOIN Team OT ON MT.ConferenceDivisionID = OT.ConferenceDivisionID
+        INNER JOIN ConferenceDivision CD ON OT.ConferenceDivisionID = CD.ConferenceDivisionID
+        WHERE MT.TeamName = %s AND OT.TeamName != %s
+        """,
+        (team_name, team_name)
     )
 
     rows = cursor.fetchall()
