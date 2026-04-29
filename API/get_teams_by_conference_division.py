@@ -9,13 +9,13 @@ def get_teams_by_conference_division(
     conn = get_db_connection()
     cursor = conn.cursor(as_dict=True)
     #cursor.execute( "{call procGetTeamsByConferenceDivision(?, ?)}", (conference, division))
-    cursor.callproc("procGetTeamsByConferenceDivision", (conference, division)) #2 or more params, and no params, use callproc
-    #cursor.execute("exec procGetTeamsByConferenceDivision @Conference=%s, @Division=%s", (conference, division))
+    cursor.callproc("procGetTeamsByConferenceDivision", (conference, division))
+    #2 or more params, and no params, use callproc
     rows = cursor.fetchall()
     conn.close()
 
     #Convert pymssql.Row objects to dicts
-    results = [
+    results = [ 
         {
             "TeamName": row["TeamName"],
             "Conference": row["Conference"],

@@ -22,71 +22,83 @@ if(OBJECT_ID('NFLFan') is not null)
 if(OBJECT_ID('AppUser') is not null)
     drop table AppUser;
 
+
+
+-- Create table for first iteration
+GO
+
+Create TABLE ConferenceDivision (
+    ConferenceDivisionID INT identity (1,1)
+    constraint PK_ConferenceDivision PRIMARY KEY,
+    Conference NVARCHAR (50) NOT NULL 
+    constraint CK_ConferenceNames CHECK (Conference IN ('AFC', 'NFC')), -- this is a check constraint, it ensures that the value entered for Conference is either 'AFC' or 'NFC'
+    Division NVARCHAR (50) NOT NULL
+    constraint CK_DivisionNames CHECK (Division IN ('North', 'South', 'East', 'West')), -- this is a check constraint, it ensures that the value entered for Division is either 'North', 'South', 'East', or 'West'
+    constraint UK_ConferenceDivision UNIQUE (Conference, Division) -- this is a unique constraint, it ensures that the combination of Conference and Division is unique (no duplicate rows)
+
+);
+
+-- alter table ConferenceDivision
+--     NOCHECK CONSTRAINT CK_ConferenceNames; -- this is a command to disable the check constraint CK_ConferenceNames, it allows us to insert data that does not meet the check constraint (we will re-enable it after we insert the data)
+
+-- alter table ConferenceDivision
+--     CHECK CONSTRAINT CK_DivisionNames; -- this is a command to disable the check constraint CK_DivisionNames, it allows us to insert data that does not meet the check constraint (we will re-enable it after we insert the data)
+    
 go
 
-create TABLE ConferenceDivision ( 
-    ConferenceDivisionID INT identity(1,1) 
-        constraint PK_ConferenceDivision PRIMARY KEY,
-    Conference NVARCHAR(50) NOT NULL
-        constraint CK_ConferenceNames CHECK (Conference IN ('AFC', 'NFC')),
-    Division NVARCHAR(50) NOT NULL
-        constraint CK_DivisionNames CHECK (Division IN ('East', 'North', 'South', 'West')),
-    constraint UK_ConferenceDivision UNIQUE (Conference, Division)
+Create TABLE Team (
+    TeamID INT identity (1,1) -- the first team we enter will be 1, the second will be 2, etc. (it increments)
+    constraint PK_Team PRIMARY KEY, -- this is the primary key for the table, it uniquely identifies each team
+    TeamName NVARCHAR (50) NOT NULL,
+    TeamCityState NVARCHAR (50) NOT NULL,
+    TeamColors NVARCHAR (100) NOT NULL,
+    ConferenceDivisionID INT NOT NULL, -- this is a foreign key that references the ConferenceDivisionID in the ConferenceDivision table
+    constraint FK_Team_ConferenceDivision FOREIGN KEY (ConferenceDivisionID) REFERENCES ConferenceDivision -- this is the foreign key constraint, it ensures that the value entered for ConferenceDivisionID in the Team table must exist in the ConferenceDivision table (it creates a relationship between the two tables)
 );
 
-go
+GO
+-- Create table for second iteration
 
-create TABLE Team ( 
-    TeamID INT identity(1,1) 
-        constraint PK_Team PRIMARY KEY,
-    TeamName NVARCHAR(50) NOT NULL,
-    TeamCityState NVARCHAR(50) NOT NULL,
-    TeamColors NVARCHAR(100) NOT NULL,
-    ConferenceDivisionID INT NOT NULL
-        constraint FK_Team_ConferenceDivision FOREIGN KEY REFERENCES ConferenceDivision(ConferenceDivisionID)
+create table AppUser (
+    AppUserID INT identity (1,1) 
+        constraint PK_AppUser PRIMARY KEY,
+    Firstname NVARCHAR (50) NOT NULL,
+    Lastname NVARCHAR (50) NOT NULL,
+    Email NVARCHAR (100) NOT NULL
+        constraint UK_AppUserEmail UNIQUE,
+    PasswordHash VARBINARY (200) NOT NULL,
+    Phone VARCHAR (20) NULL,
+    UserRole NVARCHAR (50) NOT NULL
+        constraint CK_UserRole CHECK (UserRole IN (N'NFLAdmin', N'NFLFan'))
+
+);
+
+GO 
+
+create table NFLFan(
+    NFLFanID INT
+        constraint PK_NFLFan PRIMARY KEY
+        constraint FK_NFLFan_AppUser FOREIGN KEY REFERENCES AppUser(AppUserID)
 );
 
 GO
 
-CREATE TABLE AppUser (
-    AppUserID       INT IDENTITY(1,1) 
-        CONSTRAINT PK_AppUser PRIMARY KEY,
-    Firstname        NVARCHAR(50)  NOT NULL,
-    Lastname        NVARCHAR(50)  NOT NULL,
-    Email           NVARCHAR(100)  NOT NULL 
-        CONSTRAINT UK_AppUser_Email UNIQUE,
-    PhoneNumber     NVARCHAR(20)   NULL,
-    PasswordHash    VARBINARY(256)  NOT NULL,
-    UserRole        NVARCHAR(20)   NOT NULL
-        CONSTRAINT CK_AppUser_UserRole CHECK (UserRole IN (N'NFLFan', N'NFLAdmin'))
+create table NFLAdmin(
+    NFLAdminID INT
+        constraint PK_NFLAdmin PRIMARY KEY
+        constraint FK_NFLAdmin_AppUser FOREIGN KEY REFERENCES AppUser(AppUserID)
 );
 
-GO
+GO 
 
-CREATE TABLE NFLFan (
-    NFLFanID INT CONSTRAINT PK_NFLFan PRIMARY KEY,
-    CONSTRAINT FK_NFLFan_AppUser FOREIGN KEY (NFLFanID)
-        REFERENCES AppUser(AppUserID) ON DELETE CASCADE
-);
-
-GO
-
-CREATE TABLE NFLAdmin (
-    NFLAdminID INT CONSTRAINT PK_NFLAdmin PRIMARY KEY,
-    CONSTRAINT FK_NFLAdmin_AppUser FOREIGN KEY (NFLAdminID)
-        REFERENCES AppUser(AppUserID) ON DELETE CASCADE
-);
-
-GO
-
-CREATE TABLE FanTeam (
-    FanTeamID INT IDENTITY(1,1) 
+create table FanTeam(
+    FanTeamID INT identity (1,1)
         constraint PK_FanTeam PRIMARY KEY,
-    TeamID INT NOT NULL 
-        constraint FK_FanTeam_Team FOREIGN KEY REFERENCES Team(TeamID) ON DELETE CASCADE,
     NFLFanID INT NOT NULL
-        constraint FK_FanTeam_NFLFan FOREIGN KEY REFERENCES NFLFan(NFLFanID) ON DELETE CASCADE,
-    constraint UK_FanTeam UNIQUE (TeamID, NFLFanID),
+        constraint FK_FanTeam_NFLFan FOREIGN KEY REFERENCES NFLFan(NFLFanID),
+    TeamID INT NOT NULL
+        constraint FK_FanTeam_Team FOREIGN KEY REFERENCES Team(TeamID),
+        constraint UK_FanTeam UNIQUE (NFLFanID, TeamID),
     PrimaryTeam BIT NOT NULL
 );
 

@@ -1,18 +1,19 @@
 import streamlit as st
-from fetch_data import fetch_data
+from fetch_data import fetch_data #needed to add this 
 
 def get_teams_by_conference_division_ui():
-    
+
     st.header("Get Teams by Conference and Division")
 
     #Check using dropdowns for optionality of conference and division inputs
-    #conference = st.selectbox("Select Conference", ["","AFC", "NFC"])
-    #division = st.selectbox("Select Division", ["","East", "North", "South", "West"])
+    #conference = st.selectbox("Select Conference", ["", "AFC", "NFC"])
+    #division = st.selectbox("Select Division", ["", "East", "North", "South", "West"])
 
     conference = st.text_input("Enter Conference (AFC or NFC)")
-    division = st.text_input("Enter Division (East, North, South, West)")
+    division = st.text_input("Enter Division (East, North, South, or West)")
 
     if st.button("Fetch Teams"):
+       
         input_params = {}
         if conference.strip():
             input_params["conference"] = conference
@@ -22,7 +23,7 @@ def get_teams_by_conference_division_ui():
         df = fetch_data("get_teams_by_conference_division/", input_params)
 
         if df is not None and not df.empty:
-            st.subheader(f"Teams in conference {conference}, division {division}:")
+            st.subheader(f"Teams in conference {conference} and division {division}:")
             st.dataframe(df, use_container_width=True, hide_index=True)
         else:
-            st.info(f"No teams found in conference {conference}, division {division}. Please check the inputs and try again.")
+            st.info(f"No teams found in the same conference {conference} and division {division}. Please check the inputs and try again.")

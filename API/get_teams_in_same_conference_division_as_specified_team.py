@@ -6,7 +6,12 @@ def get_teams_in_same_conference_division_as_specified_team(
 ):
     conn = get_db_connection()
     cursor = conn.cursor(as_dict=True)
-    cursor.execute("procGetTeamsInSameConferenceDivisionAsSpecifiedTeam %s", (team_name))
+
+    cursor.execute(
+        "exec procGetTeamsInSameConferenceDivisionAsSpecifiedTeam %s",
+        (team_name,)
+    )
+
     rows = cursor.fetchall()
     conn.close()
 

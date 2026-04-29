@@ -1,12 +1,26 @@
+from fastapi import params
 import streamlit as st
 import requests
 import pandas as pd
-
-FASTAPI_URL = "mist353-api-derringer.azurewebsites.net" #"http://localhost:8000"  # Adjust if your API is hosted elsewhere
-
+ 
+FASTAPI_URL = "http://localhost:8000" #adjust if your api is hosted elsewhere
+#"mist353-nfl-playoffs-api.azurewebsites.net"
 def fetch_data(endpoint: str, input_params: dict, method: str = "GET"):
     if method == "GET":
         response = requests.get(f"{FASTAPI_URL}/{endpoint}", params=input_params)
+        if response.status_code == 200:
+            payload = response.json()
+            if payload.get("error"):
+                st.error(payload["error"])
+                return None
+            rows = payload.get("data", [])
+            return pd.DataFrame(rows)
+        else:
+            st.error(f"Error fetching data: {response.status_code}")
+            return None
+
+    elif method == "POST":
+        response = requests.post(f"{FASTAPI_URL}/{endpoint}", json=input_params) 
 
         if response.status_code == 200:
             payload = response.json()
@@ -16,5 +30,13 @@ def fetch_data(endpoint: str, input_params: dict, method: str = "GET"):
         else:
             st.error(f"Error fetching data: {response.status_code}")
             return None
-           
-            
+        
+def post_data(endpoint: str, input_params: dict, method: str = "POST") -> dict:
+    if method == "POST":
+        response = requests.post(f"{FASTAPI_URL}/{endpoint}", params=input_params)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            st.error(f"Error posting data: {response.status_code}")
+            return {"status_message": f"Error posting data: {response.status_code}"}
