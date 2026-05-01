@@ -3,7 +3,7 @@ from get_teams_by_conference_division_ui import get_teams_by_conference_division
 from get_teams_in_same_conference_division_as_specified_team_ui import get_teams_in_same_conference_division_as_specified_team_ui
 from validate_user_ui import validate_user_ui
 from get_teams_for_specified_fan_ui import get_teams_for_specified_fan_ui
-from fetch_data import post_data
+#from fetch_data import post_data
 from schedule_game_ui import schedule_game_ui
 
 st.title("NFL Playoffs App")
@@ -33,4 +33,9 @@ elif api_endpoint == "Get Teams for Specified Fan":
      get_teams_for_specified_fan_ui()
 
 elif api_endpoint == "Schedule a Game":
-     schedule_game_ui()
+     if "app_user_id" not in st.session_state:
+        st.warning("Please log in to access the Schedule a Game functionality.")
+     elif st.session_state.app_user_role != "NFL Admin":
+        st.warning("Only NFL Admin users can access the Schedule a Game functionality.")
+     else:
+            schedule_game_ui()

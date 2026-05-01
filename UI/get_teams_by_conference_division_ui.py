@@ -1,5 +1,5 @@
 import streamlit as st
-from fetch_data import fetch_data #needed to add this 
+from fetch_data import fetch_data   #needed to add this 
 
 def get_teams_by_conference_division_ui():
 

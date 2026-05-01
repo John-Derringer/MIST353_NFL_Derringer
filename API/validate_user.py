@@ -1,5 +1,4 @@
 from get_db_connection import get_db_connection
-import pymssql
 
 def validate_user(
         email: str,

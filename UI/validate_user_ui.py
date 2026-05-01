@@ -1,3 +1,4 @@
+
 import streamlit as st
 from fetch_data import fetch_data
 
@@ -27,5 +28,6 @@ def validate_user_ui():
             st.dataframe(df, use_container_width=True, hide_index=True)
             st.session_state.app_user_id = df["AppUserID"].values[0]
             st.session_state.app_user_fullname = df["Fullname"].values[0]
+            st.session_state.app_user_role = df["UserRole"].values[0]
         else:
             st.info(f"User {email} is not valid. Please check the inputs and try again.")

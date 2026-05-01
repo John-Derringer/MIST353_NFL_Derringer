@@ -46,6 +46,27 @@ END;
 
 GO
 
+CREATE OR ALTER PROCEDURE procGetTeamsByConferenceDivision
+(
+    @Conference NVARCHAR(50),
+    @Division NVARCHAR(50)
+)
+AS
+BEGIN
+    SELECT
+        T.TeamName,
+        CD.Conference,
+        CD.Division,
+        T.TeamColors
+    FROM Team AS T
+    INNER JOIN ConferenceDivision AS CD
+        ON T.ConferenceDivisionID = CD.ConferenceDivisionID
+    WHERE CD.Conference = @Conference
+      AND CD.Division = @Division;
+END;
+
+GO
+
 CREATE OR ALTER PROCEDURE procGetTeamsInSameConferenceDivisionAsSpecifiedTeam
 (
     @TeamName NVARCHAR(50)
